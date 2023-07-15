@@ -1,24 +1,18 @@
 import React from "react";
 import { Container, Grid } from "@mui/material";
 
+import type { Question as QuestionType } from "./types";
+
 import { fetchQuestions } from "./utils";
 
 import { Pagination } from "./components/Pagination";
 import { Question } from "./components/Question";
 import { Skeleton } from "./components/Skeleton";
 
-type Question = {
-  category: string;
-  correct_answer: string;
-  difficulty: "easy" | "medium" | "hard";
-  incorrect_answers: string[];
-  question: string;
-};
-
 function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [page, setPage] = React.useState(1);
-  const [questions, setQuestions] = React.useState<Question[]>([]);
+  const [questions, setQuestions] = React.useState<QuestionType[]>([]);
   const [answers, setAnswers] = React.useState<Record<number, string>>({});
 
   React.useEffect(() => {
