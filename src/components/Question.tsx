@@ -20,7 +20,9 @@ export const Question = ({
   selectedAnswer = "",
 }: QuestionProps) => (
   <FormControl>
-    <FormLabel id="question">{label}</FormLabel>
+    <FormLabel id="question">
+      <span dangerouslySetInnerHTML={{ __html: label }} />
+    </FormLabel>
     <RadioGroup
       aria-labelledby="question"
       onChange={(_, selectedAnswer: string) => onAnswer(selectedAnswer)}
@@ -30,7 +32,7 @@ export const Question = ({
         <FormControlLabel
           control={<Radio color="secondary" />}
           key={index}
-          label={option}
+          label={<span dangerouslySetInnerHTML={{ __html: option }} />}
           value={option}
         />
       ))}
