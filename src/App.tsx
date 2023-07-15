@@ -1,48 +1,76 @@
-import {
-  Container,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Pagination,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import React from "react";
+import { Container, Grid } from "@mui/material";
+
+import { fetchQuestions } from "./utils";
+
+import { Pagination } from "./components/Pagination";
+import { Question } from "./components/Question";
+import { Skeleton } from "./components/Skeleton";
+
+type Question = {
+  category: string;
+  correct_answer: string;
+  difficulty: "easy" | "medium" | "hard";
+  incorrect_answers: string[];
+  question: string;
+};
 
 function App() {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [page, setPage] = React.useState(1);
+  const [questions, setQuestions] = React.useState<Question[]>([]);
+  const [answers, setAnswers] = React.useState(
+    questions.reduce(
+      (p, _, i) => ({
+        ...p,
+        [i + 1]: null,
+      }),
+      {}
+    )
+  );
+
+  React.useEffect(() => {
+    setIsLoading(true);
+
+    const fetch = async () => {
+      const response = await fetchQuestions();
+
+      setQuestions(response);
+      setIsLoading(false);
+    };
+
+    void fetch();
+  }, []);
+
   return (
     <Container>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="female"
-              name="radio-buttons-group"
-            >
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
+        {isLoading ? (
+          <Grid item xs={12}>
+            <Skeleton />
+          </Grid>
+        ) : (
+          <>
+            <Grid item xs={12}>
+              <Question
+                label={questions[page - 1]?.question}
+                onAnswer={(selectedAnswer: string) => {
+                  setAnswers((prevAnswers) => ({
+                    ...prevAnswers,
+                    [page]: selectedAnswer,
+                  }));
+                }}
+                options={[
+                  questions[page - 1]?.correct_answer,
+                  ...(questions[page - 1]?.incorrect_answers ?? []),
+                ].sort()}
               />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label="Other"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <Pagination
-            count={10}
-            color="secondary"
-            hideNextButton
-            hidePrevButton
-          />
-        </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Pagination page={page} onChange={setPage} />
+            </Grid>
+          </>
+        )}
       </Grid>
     </Container>
   );
