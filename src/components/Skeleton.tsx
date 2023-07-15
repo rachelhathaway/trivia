@@ -8,8 +8,8 @@ export const Skeleton = () => {
       </Grid>
       <Grid item xs={4}>
         <Grid container direction="column" spacing={2}>
-          {Array.from(new Array(3)).map(() => (
-            <Grid item xs={12}>
+          {Array.from(new Array(3)).map((_, index) => (
+            <Grid item key={index} xs={12}>
               <Grid container spacing={2}>
                 <Grid item>
                   <MuiSkeleton variant="circular" width={20} height={20} />
