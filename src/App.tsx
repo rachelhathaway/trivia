@@ -56,6 +56,7 @@ function App() {
                   questions[page - 1]?.correct_answer,
                   ...(questions[page - 1]?.incorrect_answers ?? []),
                 ].sort()}
+                selectedAnswer={answers[page]}
               />
             </Grid>
             <Grid item xs={12}>
