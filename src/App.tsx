@@ -19,15 +19,7 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [page, setPage] = React.useState(1);
   const [questions, setQuestions] = React.useState<Question[]>([]);
-  const [answers, setAnswers] = React.useState(
-    questions.reduce(
-      (p, _, i) => ({
-        ...p,
-        [i + 1]: null,
-      }),
-      {}
-    )
-  );
+  const [answers, setAnswers] = React.useState<Record<number, string>>({});
 
   React.useEffect(() => {
     setIsLoading(true);
