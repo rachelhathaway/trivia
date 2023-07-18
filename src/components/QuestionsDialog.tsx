@@ -7,11 +7,12 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Slide,
   Toolbar,
 } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import { Cancel, CheckCircle, Close } from "@mui/icons-material";
 import type { TransitionProps } from "@mui/material/transitions";
 
 import type { Question } from "../types";
@@ -49,7 +50,7 @@ export const QuestionsDialog = ({
     >
       <AppBar color="secondary" position="sticky">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box>Questions</Box>
+          <Box>Answered Questions</Box>
           <IconButton
             aria-label="list"
             color="inherit"
@@ -65,38 +66,43 @@ export const QuestionsDialog = ({
         <List>
           {answerIndexes.map((questionIndex, index) => {
             const question = questions[parseInt(questionIndex, 10)];
+            const selectedAnswer = answers[parseInt(questionIndex, 10)];
+            const answeredCorrectly =
+              selectedAnswer === question.correct_answer;
 
             return (
               <React.Fragment key={question.question}>
                 <ListItem>
+                  <ListItemIcon>
+                    {answeredCorrectly ? (
+                      <CheckCircle color="success" />
+                    ) : (
+                      <Cancel color="error" />
+                    )}
+                  </ListItemIcon>
                   <ListItemText
                     primary={
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: question.question,
-                        }}
-                      />
+                      <Box>
+                        <Box style={{ display: "flex", columnGap: "0.5rem" }}>
+                          <span>Q:</span>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: question.question,
+                            }}
+                          />
+                        </Box>
+                        <Box style={{ display: "flex", columnGap: "0.5rem" }}>
+                          <span>A:</span>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: question.correct_answer,
+                            }}
+                          />
+                        </Box>
+                      </Box>
                     }
                   />
                 </ListItem>
-                <List>
-                  {[question.correct_answer, ...question.incorrect_answers].map(
-                    (answer) => (
-                      <ListItem key={answer}>
-                        <ListItemText
-                          inset
-                          primary={
-                            <span
-                              dangerouslySetInnerHTML={{
-                                __html: answer,
-                              }}
-                            />
-                          }
-                        />
-                      </ListItem>
-                    )
-                  )}
-                </List>
                 {index !== answerIndexes.length - 1 && <Divider />}
               </React.Fragment>
             );
