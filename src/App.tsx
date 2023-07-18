@@ -20,6 +20,7 @@ function App() {
   });
   const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const [answers, setAnswers] = React.useState<Record<number, string>>({});
+  const [isListVisible, setIsListVisible] = React.useState(false);
   const questions =
     data?.pages.reduce(
       (allQuestions, page) => [...allQuestions, ...page],
@@ -44,6 +45,9 @@ function App() {
       <StatusBar
         numCorrectAnswers={numCorrectAnswers}
         numTotalAnswers={Object.keys(answers).length}
+        onListClick={() =>
+          setIsListVisible((prevIsListVisible) => !prevIsListVisible)
+        }
       />
       <Container
         maxWidth="sm"
