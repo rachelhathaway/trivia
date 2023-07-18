@@ -4,7 +4,7 @@ import { Container, Grid } from "@mui/material";
 
 import { fetchQuestions } from "./utils";
 
-import { QuestionsDialog } from "./components/QuestionsDialog";
+import { AnsweredQuestionsDialog } from "./components/AnsweredQuestionsDialog";
 import { Question } from "./components/Question";
 import { Skeleton } from "./components/Skeleton";
 import { StatusBar } from "./components/StatusBar";
@@ -95,7 +95,7 @@ function App() {
           )}
         </Grid>
       </Container>
-      <QuestionsDialog
+      <AnsweredQuestionsDialog
         answers={answers}
         isOpen={isListVisible}
         handleClose={() => setIsListVisible(false)}

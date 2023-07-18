@@ -26,19 +26,19 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-type QuestionsDialogProps = {
+type AnsweredQuestionsDialogProps = {
   answers: Record<number, string>;
   handleClose: () => void;
   isOpen: boolean;
   questions: Question[];
 };
 
-export const QuestionsDialog = ({
+export const AnsweredQuestionsDialog = ({
   answers,
   handleClose,
   isOpen,
   questions,
-}: QuestionsDialogProps) => {
+}: AnsweredQuestionsDialogProps) => {
   const answerIndexes = Object.keys(answers);
 
   return (
