@@ -14,6 +14,7 @@ export const StatusBar = ({
 }: StatusBarProps) => (
   <AppBar position="sticky">
     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box>{`${numCorrectAnswers} / ${numTotalAnswers}`}</Box>
       <IconButton
         aria-label="list"
         color="inherit"
@@ -23,7 +24,6 @@ export const StatusBar = ({
       >
         <List />
       </IconButton>
-      <Box>{`${numCorrectAnswers} / ${numTotalAnswers}`}</Box>
     </Toolbar>
   </AppBar>
 );
