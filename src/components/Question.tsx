@@ -23,6 +23,7 @@ export const Question = ({
   selectedAnswer = "",
 }: QuestionProps) => {
   const options = [correctAnswer, ...incorrectAnswers].sort();
+  const selectedColor = selectedAnswer === correctAnswer ? "success" : "error";
 
   return (
     <FormControl>
@@ -38,11 +39,7 @@ export const Question = ({
       >
         {options.map((option, index) => (
           <FormControlLabel
-            control={
-              <Radio
-                color={selectedAnswer === correctAnswer ? "success" : "error"}
-              />
-            }
+            control={<Radio color={selectedColor} />}
             key={index}
             label={<span dangerouslySetInnerHTML={{ __html: option }} />}
             value={option}
