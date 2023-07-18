@@ -51,14 +51,17 @@ function App() {
                 }
                 label={questions[currentQuestionIndex]?.question}
                 onAnswer={(selectedAnswer: string) => {
-                  setAnswers((prevAnswers) => ({
-                    ...prevAnswers,
-                    [currentQuestionIndex]: selectedAnswer,
-                  }));
-                  setTimeout(
-                    () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
-                    1000
-                  );
+                  if (!answers[currentQuestionIndex]) {
+                    setAnswers((prevAnswers) => ({
+                      ...prevAnswers,
+                      [currentQuestionIndex]: selectedAnswer,
+                    }));
+                    setTimeout(
+                      () =>
+                        setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
+                      1000
+                    );
+                  }
                 }}
                 selectedAnswer={answers[currentQuestionIndex]}
               />
