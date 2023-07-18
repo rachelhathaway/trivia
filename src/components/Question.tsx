@@ -24,6 +24,8 @@ export const Question = ({
 }: QuestionProps) => {
   const options = [correctAnswer, ...incorrectAnswers].sort();
   const selectedColor = selectedAnswer === correctAnswer ? "success" : "error";
+  const shouldHighlightOption = (option: string) =>
+    selectedAnswer && option !== selectedAnswer && option === correctAnswer;
 
   return (
     <FormControl>
@@ -41,7 +43,28 @@ export const Question = ({
           <FormControlLabel
             control={<Radio color={selectedColor} />}
             key={index}
-            label={<span dangerouslySetInnerHTML={{ __html: option }} />}
+            label={
+              <Box
+                sx={(theme) => {
+                  const padding = "0.5rem 1rem";
+
+                  if (shouldHighlightOption(option)) {
+                    return {
+                      backgroundColor: theme.palette.success.light,
+                      color: theme.palette.success.contrastText,
+                      borderRadius: "0.5rem",
+                      padding,
+                    };
+                  }
+
+                  return {
+                    padding,
+                  };
+                }}
+              >
+                <span dangerouslySetInnerHTML={{ __html: option }} />
+              </Box>
+            }
             value={option}
           />
         ))}
