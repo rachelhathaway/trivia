@@ -6,6 +6,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import { CheckCircle } from "@mui/icons-material";
 
 type QuestionProps = {
   correctAnswer: string;
@@ -45,24 +46,17 @@ export const Question = ({
             key={index}
             label={
               <Box
-                sx={(theme) => {
-                  const padding = "0.5rem 1rem";
-
-                  if (shouldHighlightOption(option)) {
-                    return {
-                      backgroundColor: theme.palette.success.light,
-                      color: theme.palette.success.contrastText,
-                      borderRadius: "0.5rem",
-                      padding,
-                    };
-                  }
-
-                  return {
-                    padding,
-                  };
+                sx={{
+                  padding: "0.5rem 1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  columnGap: "0.5rem",
                 }}
               >
                 <span dangerouslySetInnerHTML={{ __html: option }} />
+                {shouldHighlightOption(option) && (
+                  <CheckCircle color="success" />
+                )}
               </Box>
             }
             value={option}
