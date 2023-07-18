@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -26,7 +27,9 @@ export const Question = ({
   return (
     <FormControl>
       <FormLabel id="question">
-        <span dangerouslySetInnerHTML={{ __html: label }} />
+        <Box sx={{ lineHeight: 1.25 }}>
+          <h1 dangerouslySetInnerHTML={{ __html: label }} />
+        </Box>
       </FormLabel>
       <RadioGroup
         aria-labelledby="question"
