@@ -1,32 +1,31 @@
 import React from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Container, Grid } from "@mui/material";
-
-import type { Question as QuestionType } from "./types";
 
 import { fetchQuestions } from "./utils";
 
-import { Pagination } from "./components/Pagination";
 import { Question } from "./components/Question";
 import { Skeleton } from "./components/Skeleton";
 
 function App() {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [page, setPage] = React.useState(1);
-  const [questions, setQuestions] = React.useState<QuestionType[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
+  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
+    queryKey: ["questions"],
+    queryFn: () => fetchQuestions(1),
+    getNextPageParam: () => true,
+  });
   const [answers, setAnswers] = React.useState<Record<number, string>>({});
+  const questions =
+    data?.pages.reduce(
+      (allQuestions, page) => [...allQuestions, ...page],
+      []
+    ) ?? [];
 
   React.useEffect(() => {
-    setIsLoading(true);
-
-    const fetch = async () => {
-      const response = await fetchQuestions();
-
-      setQuestions(response);
-      setIsLoading(false);
-    };
-
-    void fetch();
-  }, []);
+    if (currentQuestionIndex + 1 === questions.length) {
+      void fetchNextPage();
+    }
+  }, [currentQuestionIndex, fetchNextPage, questions.length]);
 
   return (
     <Container>
@@ -39,23 +38,25 @@ function App() {
           <>
             <Grid item xs={12}>
               <Question
-                label={questions[page - 1]?.question}
+                label={questions[currentQuestionIndex]?.question}
                 onAnswer={(selectedAnswer: string) => {
                   setAnswers((prevAnswers) => ({
                     ...prevAnswers,
-                    [page]: selectedAnswer,
+                    [currentQuestionIndex]: selectedAnswer,
                   }));
+                  setTimeout(
+                    () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
+                    1000
+                  );
                 }}
                 options={[
-                  questions[page - 1]?.correct_answer,
-                  ...(questions[page - 1]?.incorrect_answers ?? []),
+                  questions[currentQuestionIndex]?.correct_answer,
+                  ...(questions[currentQuestionIndex]?.incorrect_answers ?? []),
                 ].sort()}
-                selectedAnswer={answers[page]}
+                selectedAnswer={answers[currentQuestionIndex]}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Pagination page={page} onChange={setPage} />
-            </Grid>
+            <Grid item xs={12}></Grid>
           </>
         )}
       </Grid>
