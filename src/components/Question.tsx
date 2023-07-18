@@ -35,7 +35,11 @@ export const Question = ({
       >
         {options.map((option, index) => (
           <FormControlLabel
-            control={<Radio color="secondary" />}
+            control={
+              <Radio
+                color={selectedAnswer === correctAnswer ? "success" : "error"}
+              />
+            }
             key={index}
             label={<span dangerouslySetInnerHTML={{ __html: option }} />}
             value={option}
