@@ -32,7 +32,10 @@ function App() {
   }, [currentQuestionIndex, fetchNextPage, questions.length]);
 
   return (
-    <Container>
+    <Container
+      maxWidth="xs"
+      sx={{ height: "100%", display: "flex", alignItems: "center" }}
+    >
       <Grid container spacing={2}>
         {isLoading ? (
           <Grid item xs={12}>
