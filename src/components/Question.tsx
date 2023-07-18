@@ -33,7 +33,7 @@ export const Question = ({
       </FormLabel>
       <RadioGroup
         aria-labelledby="question"
-        onChange={(_, selectedAnswer: string) => onAnswer(selectedAnswer)}
+        onChange={(_, answer: string) => onAnswer(answer)}
         value={selectedAnswer}
       >
         {options.map((option, index) => (
