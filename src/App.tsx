@@ -1,6 +1,6 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Container, Grid } from "@mui/material";
+import { AppBar, Box, Container, Grid } from "@mui/material";
 
 import { fetchQuestions } from "./utils";
 
@@ -24,6 +24,13 @@ function App() {
       (allQuestions, page) => [...allQuestions, ...page],
       []
     ) ?? [];
+  const numCorrectAnswers = questions.reduce((numCorrect, question, index) => {
+    if (answers[index] === question.correct_answer) {
+      return numCorrect + 1;
+    }
+
+    return numCorrect;
+  }, 0);
 
   React.useEffect(() => {
     if (currentQuestionIndex + 1 === questions.length) {
@@ -32,45 +39,56 @@ function App() {
   }, [currentQuestionIndex, fetchNextPage, questions.length]);
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{ height: "100%", display: "flex", alignItems: "center" }}
-    >
-      <Grid container spacing={2}>
-        {isLoading ? (
-          <Grid item xs={12}>
-            <Skeleton />
-          </Grid>
-        ) : (
-          <>
+    <>
+      <AppBar position="sticky">
+        <Box
+          sx={{ display: "flex", justifyContent: "center", padding: "1rem 0" }}
+        >
+          <Box>{`${numCorrectAnswers} / ${Object.keys(answers).length}`}</Box>
+        </Box>
+      </AppBar>
+      <Container
+        maxWidth="sm"
+        sx={{ height: "100%", display: "flex", alignItems: "center" }}
+      >
+        <Grid container spacing={2}>
+          {isLoading ? (
             <Grid item xs={12}>
-              <Question
-                correctAnswer={questions[currentQuestionIndex]?.correct_answer}
-                incorrectAnswers={
-                  questions[currentQuestionIndex]?.incorrect_answers ?? []
-                }
-                label={questions[currentQuestionIndex]?.question}
-                onAnswer={(selectedAnswer: string) => {
-                  if (!answers[currentQuestionIndex]) {
-                    setAnswers((prevAnswers) => ({
-                      ...prevAnswers,
-                      [currentQuestionIndex]: selectedAnswer,
-                    }));
-                    setTimeout(
-                      () =>
-                        setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
-                      1000
-                    );
-                  }
-                }}
-                selectedAnswer={answers[currentQuestionIndex]}
-              />
+              <Skeleton />
             </Grid>
-            <Grid item xs={12}></Grid>
-          </>
-        )}
-      </Grid>
-    </Container>
+          ) : (
+            <>
+              <Grid item xs={12}>
+                <Question
+                  correctAnswer={
+                    questions[currentQuestionIndex]?.correct_answer
+                  }
+                  incorrectAnswers={
+                    questions[currentQuestionIndex]?.incorrect_answers ?? []
+                  }
+                  label={questions[currentQuestionIndex]?.question}
+                  onAnswer={(selectedAnswer: string) => {
+                    if (!answers[currentQuestionIndex]) {
+                      setAnswers((prevAnswers) => ({
+                        ...prevAnswers,
+                        [currentQuestionIndex]: selectedAnswer,
+                      }));
+                      setTimeout(
+                        () =>
+                          setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
+                        1000
+                      );
+                    }
+                  }}
+                  selectedAnswer={answers[currentQuestionIndex]}
+                />
+              </Grid>
+              <Grid item xs={12}></Grid>
+            </>
+          )}
+        </Grid>
+      </Container>
+    </>
   );
 }
 
