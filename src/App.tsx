@@ -38,6 +38,10 @@ function App() {
           <>
             <Grid item xs={12}>
               <Question
+                correctAnswer={questions[currentQuestionIndex]?.correct_answer}
+                incorrectAnswers={
+                  questions[currentQuestionIndex]?.incorrect_answers ?? []
+                }
                 label={questions[currentQuestionIndex]?.question}
                 onAnswer={(selectedAnswer: string) => {
                   setAnswers((prevAnswers) => ({
@@ -49,10 +53,6 @@ function App() {
                     1000
                   );
                 }}
-                options={[
-                  questions[currentQuestionIndex]?.correct_answer,
-                  ...(questions[currentQuestionIndex]?.incorrect_answers ?? []),
-                ].sort()}
                 selectedAnswer={answers[currentQuestionIndex]}
               />
             </Grid>
