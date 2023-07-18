@@ -8,12 +8,16 @@ import { Question } from "./components/Question";
 import { Skeleton } from "./components/Skeleton";
 
 function App() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
     queryKey: ["questions"],
-    queryFn: () => fetchQuestions(1),
+    queryFn: ({ pageParam }) => {
+      const numQuestions = pageParam ? 5 : 1;
+
+      return fetchQuestions(numQuestions);
+    },
     getNextPageParam: () => true,
   });
+  const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const [answers, setAnswers] = React.useState<Record<number, string>>({});
   const questions =
     data?.pages.reduce(
