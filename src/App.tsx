@@ -52,7 +52,11 @@ function App() {
       />
       <Container
         maxWidth="sm"
-        sx={{ height: "100%", display: "flex", alignItems: "center" }}
+        sx={{
+          height: "calc(100% - 64px)",
+          display: "flex",
+          alignItems: "center",
+        }}
       >
         <Grid container spacing={2}>
           {isLoading ? (
