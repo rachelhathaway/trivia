@@ -1,11 +1,12 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { AppBar, Box, Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 
 import { fetchQuestions } from "./utils";
 
 import { Question } from "./components/Question";
 import { Skeleton } from "./components/Skeleton";
+import { StatusBar } from "./components/StatusBar";
 
 function App() {
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
@@ -40,13 +41,10 @@ function App() {
 
   return (
     <>
-      <AppBar position="sticky">
-        <Box
-          sx={{ display: "flex", justifyContent: "center", padding: "1rem 0" }}
-        >
-          <Box>{`${numCorrectAnswers} / ${Object.keys(answers).length}`}</Box>
-        </Box>
-      </AppBar>
+      <StatusBar
+        numCorrectAnswers={numCorrectAnswers}
+        numTotalAnswers={Object.keys(answers).length}
+      />
       <Container
         maxWidth="sm"
         sx={{ height: "100%", display: "flex", alignItems: "center" }}
