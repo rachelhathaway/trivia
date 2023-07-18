@@ -5,8 +5,12 @@ type JsonResponse = {
   results: Question[];
 };
 
-export const fetchQuestions = async (): Promise<Question[]> => {
-  const response = await fetch("https://opentdb.com/api.php?amount=10");
+export const fetchQuestions = async (
+  numQuestions = 10
+): Promise<Question[]> => {
+  const response = await fetch(
+    `https://opentdb.com/api.php?amount=${numQuestions}`
+  );
 
   if (!response.ok) {
     throw new Error(response.statusText);
