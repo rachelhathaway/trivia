@@ -33,7 +33,7 @@ function App() {
 
   return (
     <Container
-      maxWidth="xs"
+      maxWidth="sm"
       sx={{ height: "100%", display: "flex", alignItems: "center" }}
     >
       <Grid container spacing={2}>
