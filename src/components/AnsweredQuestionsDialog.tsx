@@ -1,6 +1,5 @@
 import React from "react";
-import { AppBar, Dialog, IconButton, Slide, Toolbar } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import { Dialog, Slide } from "@mui/material";
 import type { TransitionProps } from "@mui/material/transitions";
 
 const Transition = React.forwardRef(function Transition(
@@ -14,14 +13,12 @@ const Transition = React.forwardRef(function Transition(
 
 type AnsweredQuestionsDialogProps = React.PropsWithChildren & {
   handleClose: () => void;
-  header: React.ReactElement;
   isOpen: boolean;
 };
 
 export const AnsweredQuestionsDialog = ({
   children,
   handleClose,
-  header,
   isOpen,
 }: AnsweredQuestionsDialogProps) => (
   <Dialog
@@ -30,20 +27,6 @@ export const AnsweredQuestionsDialog = ({
     onClose={handleClose}
     TransitionComponent={Transition}
   >
-    <AppBar color="secondary" position="sticky">
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        {header}
-        <IconButton
-          aria-label="list"
-          color="inherit"
-          edge="start"
-          onClick={handleClose}
-          size="large"
-        >
-          <Close />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
     {children}
   </Dialog>
 );

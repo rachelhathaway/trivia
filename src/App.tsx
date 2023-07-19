@@ -1,6 +1,7 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Container, Grid } from "@mui/material";
+import { List, Close } from "@mui/icons-material";
 
 import { fetchQuestions } from "./utils";
 
@@ -53,7 +54,8 @@ function App() {
     <>
       <StatusBar
         header={header}
-        onListClick={() =>
+        icon={<List />}
+        onIconClick={() =>
           setIsListVisible((prevIsListVisible) => !prevIsListVisible)
         }
       />
@@ -104,10 +106,15 @@ function App() {
         </Grid>
       </Container>
       <AnsweredQuestionsDialog
-        header={header}
         isOpen={isListVisible}
         handleClose={() => setIsListVisible(false)}
       >
+        <StatusBar
+          color="secondary"
+          header={header}
+          icon={<Close />}
+          onIconClick={() => setIsListVisible(false)}
+        />
         <AnsweredQuestions answers={answers} questions={questions} />
       </AnsweredQuestionsDialog>
     </>
