@@ -7,6 +7,7 @@ import { fetchQuestions } from "./utils";
 import { AnsweredQuestions } from "./components/AnsweredQuestions";
 import { AnsweredQuestionsDialog } from "./components/AnsweredQuestionsDialog";
 import { Question } from "./components/Question";
+import { RatioHeader } from "./components/RatioHeader";
 import { Skeleton } from "./components/Skeleton";
 import { StatusBar } from "./components/StatusBar";
 
@@ -35,6 +36,12 @@ function App() {
 
     return numCorrect;
   }, 0);
+  const header = (
+    <RatioHeader
+      numCorrectAnswers={numCorrectAnswers}
+      numTotalAnswers={Object.keys(answers).length}
+    />
+  );
 
   React.useEffect(() => {
     if (currentQuestionIndex + 1 === questions.length) {
@@ -45,8 +52,7 @@ function App() {
   return (
     <>
       <StatusBar
-        numCorrectAnswers={numCorrectAnswers}
-        numTotalAnswers={Object.keys(answers).length}
+        header={header}
         onListClick={() =>
           setIsListVisible((prevIsListVisible) => !prevIsListVisible)
         }
@@ -97,6 +103,7 @@ function App() {
         </Grid>
       </Container>
       <AnsweredQuestionsDialog
+        header={header}
         isOpen={isListVisible}
         handleClose={() => setIsListVisible(false)}
       >

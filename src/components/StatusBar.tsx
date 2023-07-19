@@ -1,20 +1,16 @@
-import { AppBar, Box, IconButton, Toolbar } from "@mui/material";
+import React from "react";
+import { AppBar, IconButton, Toolbar } from "@mui/material";
 import { List } from "@mui/icons-material";
 
 type StatusBarProps = {
-  numCorrectAnswers: number;
-  numTotalAnswers: number;
+  header: React.ReactElement;
   onListClick: () => void;
 };
 
-export const StatusBar = ({
-  numCorrectAnswers,
-  numTotalAnswers,
-  onListClick,
-}: StatusBarProps) => (
+export const StatusBar = ({ header, onListClick }: StatusBarProps) => (
   <AppBar position="sticky">
     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Box>{`${numCorrectAnswers} / ${numTotalAnswers}`}</Box>
+      {header}
       <IconButton
         aria-label="list"
         color="inherit"
