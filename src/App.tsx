@@ -63,6 +63,7 @@ function App() {
           height: "calc(100% - 64px)",
           display: "flex",
           alignItems: "center",
+          marginTop: "64px",
         }}
       >
         <Grid container spacing={2}>
