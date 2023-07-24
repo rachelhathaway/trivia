@@ -2,7 +2,7 @@ import { Grid, Skeleton as MuiSkeleton } from "@mui/material";
 
 export const Skeleton = () => {
   return (
-    <Grid container direction="column" spacing={2}>
+    <Grid alignItems="center" container direction="column" spacing={2}>
       <Grid item xs={4}>
         <MuiSkeleton variant="rectangular" width={245} height={20} />
       </Grid>
@@ -21,9 +21,6 @@ export const Skeleton = () => {
             </Grid>
           ))}
         </Grid>
-      </Grid>
-      <Grid item xs={4}>
-        <MuiSkeleton variant="rectangular" width={245} height={20} />
       </Grid>
     </Grid>
   );
