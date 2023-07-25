@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 
 type QuestionProps = {
   correctAnswer: string;
@@ -19,9 +19,12 @@ export const Question = ({
   const selectedColor = selectedAnswer === correctAnswer ? "success" : "error";
 
   return (
-    <>
-      <Box sx={{ lineHeight: 1.25, marginTop: 0, textAlign: "center" }}>
-        <h1 dangerouslySetInnerHTML={{ __html: label }} />
+    <Container sx={{ display: "flex", flexDirection: "column" }}>
+      <Box sx={{ lineHeight: 1.25, textAlign: "center" }}>
+        <h1
+          dangerouslySetInnerHTML={{ __html: label }}
+          style={{ marginTop: 0 }}
+        />
       </Box>
       <Box style={{ rowGap: 10, display: "flex", flexDirection: "column" }}>
         {options.map((option, index) => (
@@ -39,6 +42,6 @@ export const Question = ({
           </Button>
         ))}
       </Box>
-    </>
+    </Container>
   );
 };
