@@ -1,7 +1,7 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Container, Grid } from "@mui/material";
-import { List, Close } from "@mui/icons-material";
+import { Container, Fab, Grid } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 import { fetchQuestions } from "./utils";
 
@@ -51,21 +51,17 @@ function App() {
   }, [currentQuestionIndex, fetchNextPage, questions.length]);
 
   return (
-    <>
-      <StatusBar
-        header={header}
-        icon={<List />}
-        onIconClick={() =>
-          setIsListVisible((prevIsListVisible) => !prevIsListVisible)
-        }
-      />
+    <Container
+      sx={{
+        height: "100%",
+      }}
+    >
       <Container
-        maxWidth="sm"
+        maxWidth="xs"
         sx={{
-          height: "calc(100% - 64px)",
+          height: "100%",
           display: "flex",
           alignItems: "center",
-          marginTop: "64px",
         }}
       >
         <Grid container spacing={2}>
@@ -74,37 +70,40 @@ function App() {
               <Skeleton />
             </Grid>
           ) : (
-            <>
-              <Grid item xs={12}>
-                <Question
-                  correctAnswer={
-                    questions[currentQuestionIndex]?.correct_answer
+            <Grid item xs={12}>
+              <Question
+                correctAnswer={questions[currentQuestionIndex]?.correct_answer}
+                incorrectAnswers={
+                  questions[currentQuestionIndex]?.incorrect_answers ?? []
+                }
+                label={questions[currentQuestionIndex]?.question}
+                onAnswer={(selectedAnswer: string) => {
+                  if (!answers[currentQuestionIndex]) {
+                    setAnswers((prevAnswers) => ({
+                      ...prevAnswers,
+                      [currentQuestionIndex]: selectedAnswer,
+                    }));
+                    setTimeout(
+                      () =>
+                        setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
+                      1000
+                    );
                   }
-                  incorrectAnswers={
-                    questions[currentQuestionIndex]?.incorrect_answers ?? []
-                  }
-                  label={questions[currentQuestionIndex]?.question}
-                  onAnswer={(selectedAnswer: string) => {
-                    if (!answers[currentQuestionIndex]) {
-                      setAnswers((prevAnswers) => ({
-                        ...prevAnswers,
-                        [currentQuestionIndex]: selectedAnswer,
-                      }));
-                      setTimeout(
-                        () =>
-                          setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
-                        1000
-                      );
-                    }
-                  }}
-                  selectedAnswer={answers[currentQuestionIndex]}
-                />
-              </Grid>
-              <Grid item xs={12}></Grid>
-            </>
+                }}
+                selectedAnswer={answers[currentQuestionIndex]}
+              />
+            </Grid>
           )}
         </Grid>
       </Container>
+      <Fab
+        aria-label="show answered questions"
+        color="secondary"
+        onClick={() => setIsListVisible(true)}
+        sx={{ position: "fixed", bottom: 0, right: 0, margin: "1rem" }}
+      >
+        {`${numCorrectAnswers} / ${Object.keys(answers).length}`}
+      </Fab>
       <AnsweredQuestionsDialog
         isOpen={isListVisible}
         handleClose={() => setIsListVisible(false)}
@@ -117,7 +116,7 @@ function App() {
         />
         <AnsweredQuestions answers={answers} questions={questions} />
       </AnsweredQuestionsDialog>
-    </>
+    </Container>
   );
 }
 
