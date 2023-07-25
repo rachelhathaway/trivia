@@ -1,12 +1,4 @@
-import {
-  Box,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import { CheckCircle } from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
 
 type QuestionProps = {
   correctAnswer: string;
@@ -25,44 +17,28 @@ export const Question = ({
 }: QuestionProps) => {
   const options = [correctAnswer, ...incorrectAnswers].sort();
   const selectedColor = selectedAnswer === correctAnswer ? "success" : "error";
-  const shouldHighlightOption = (option: string) =>
-    selectedAnswer && option !== selectedAnswer && option === correctAnswer;
 
   return (
-    <FormControl>
-      <FormLabel id="question">
-        <Box sx={{ lineHeight: 1.25 }}>
-          <h1 dangerouslySetInnerHTML={{ __html: label }} />
-        </Box>
-      </FormLabel>
-      <RadioGroup
-        aria-labelledby="question"
-        onChange={(_, answer: string) => onAnswer(answer)}
-        value={selectedAnswer}
-      >
+    <>
+      <Box sx={{ lineHeight: 1.25, marginTop: 0, textAlign: "center" }}>
+        <h1 dangerouslySetInnerHTML={{ __html: label }} />
+      </Box>
+      <Box style={{ rowGap: 10, display: "flex", flexDirection: "column" }}>
         {options.map((option, index) => (
-          <FormControlLabel
-            control={<Radio color={selectedColor} />}
-            key={index}
-            label={
-              <Box
-                sx={{
-                  padding: "0.5rem 1rem",
-                  display: "flex",
-                  alignItems: "center",
-                  columnGap: "0.5rem",
-                }}
-              >
-                <span dangerouslySetInnerHTML={{ __html: option }} />
-                {shouldHighlightOption(option) && (
-                  <CheckCircle color="success" />
-                )}
-              </Box>
+          <Button
+            color={
+              selectedAnswer && selectedAnswer == option
+                ? selectedColor
+                : undefined
             }
-            value={option}
-          />
+            key={index}
+            onClick={() => onAnswer(option)}
+            variant="outlined"
+          >
+            <span dangerouslySetInnerHTML={{ __html: option }} />
+          </Button>
         ))}
-      </RadioGroup>
-    </FormControl>
+      </Box>
+    </>
   );
 };
