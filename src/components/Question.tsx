@@ -17,6 +17,8 @@ export const Question = ({
 }: QuestionProps) => {
   const options = [correctAnswer, ...incorrectAnswers].sort();
   const selectedColor = selectedAnswer === correctAnswer ? "success" : "error";
+  const isSelectedAnswer = (option: string) =>
+    selectedAnswer && selectedAnswer == option;
 
   return (
     <Container sx={{ display: "flex", flexDirection: "column" }}>
@@ -29,14 +31,10 @@ export const Question = ({
       <Box style={{ rowGap: 10, display: "flex", flexDirection: "column" }}>
         {options.map((option, index) => (
           <Button
-            color={
-              selectedAnswer && selectedAnswer == option
-                ? selectedColor
-                : undefined
-            }
+            color={isSelectedAnswer(option) ? selectedColor : undefined}
             key={index}
             onClick={() => onAnswer(option)}
-            variant="outlined"
+            variant={isSelectedAnswer(option) ? "contained" : "outlined"}
           >
             <span dangerouslySetInnerHTML={{ __html: option }} />
           </Button>
