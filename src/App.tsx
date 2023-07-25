@@ -1,6 +1,6 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Container, Fab, Grid } from "@mui/material";
+import { Container, Fab } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 import { fetchQuestions } from "./utils";
@@ -64,37 +64,30 @@ function App() {
           alignItems: "center",
         }}
       >
-        <Grid container spacing={2}>
-          {isLoading ? (
-            <Grid item xs={12}>
-              <Skeleton />
-            </Grid>
-          ) : (
-            <Grid item xs={12}>
-              <Question
-                correctAnswer={questions[currentQuestionIndex]?.correct_answer}
-                incorrectAnswers={
-                  questions[currentQuestionIndex]?.incorrect_answers ?? []
-                }
-                label={questions[currentQuestionIndex]?.question}
-                onAnswer={(selectedAnswer: string) => {
-                  if (!answers[currentQuestionIndex]) {
-                    setAnswers((prevAnswers) => ({
-                      ...prevAnswers,
-                      [currentQuestionIndex]: selectedAnswer,
-                    }));
-                    setTimeout(
-                      () =>
-                        setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
-                      1000
-                    );
-                  }
-                }}
-                selectedAnswer={answers[currentQuestionIndex]}
-              />
-            </Grid>
-          )}
-        </Grid>
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          <Question
+            correctAnswer={questions[currentQuestionIndex]?.correct_answer}
+            incorrectAnswers={
+              questions[currentQuestionIndex]?.incorrect_answers ?? []
+            }
+            label={questions[currentQuestionIndex]?.question}
+            onAnswer={(selectedAnswer: string) => {
+              if (!answers[currentQuestionIndex]) {
+                setAnswers((prevAnswers) => ({
+                  ...prevAnswers,
+                  [currentQuestionIndex]: selectedAnswer,
+                }));
+                setTimeout(
+                  () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
+                  1000
+                );
+              }
+            }}
+            selectedAnswer={answers[currentQuestionIndex]}
+          />
+        )}
       </Container>
       <Fab
         aria-label="show answered questions"
