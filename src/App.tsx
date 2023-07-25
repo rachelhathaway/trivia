@@ -109,7 +109,6 @@ function App() {
         handleClose={() => setIsListVisible(false)}
       >
         <StatusBar
-          color="secondary"
           header={header}
           icon={<Close />}
           onIconClick={() => setIsListVisible(false)}
