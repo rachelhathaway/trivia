@@ -98,7 +98,7 @@ function App() {
       </Container>
       <Fab
         aria-label="show answered questions"
-        color="secondary"
+        color="primary"
         onClick={() => setIsListVisible(true)}
         sx={{ position: "fixed", bottom: 0, right: 0, margin: "1rem" }}
       >
