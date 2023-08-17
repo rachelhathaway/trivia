@@ -1,8 +1,7 @@
 import React from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { Container } from "@mui/material";
 
-import { fetchQuestions } from "./utils";
+import { useQuestions } from "./hooks";
 
 import { AnsweredQuestions } from "./components/AnsweredQuestions";
 import { AnsweredQuestionsDialog } from "./components/AnsweredQuestionsDialog";
@@ -10,22 +9,9 @@ import { Question } from "./components/Question";
 import { Skeleton } from "./components/Skeleton";
 
 function App() {
-  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ["questions"],
-    queryFn: ({ pageParam }) => {
-      const numQuestions = pageParam ? 5 : 1;
-
-      return fetchQuestions(numQuestions);
-    },
-    getNextPageParam: () => true,
-  });
   const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const [answers, setAnswers] = React.useState<Record<number, string>>({});
-  const questions =
-    data?.pages.reduce(
-      (allQuestions, page) => [...allQuestions, ...page],
-      []
-    ) ?? [];
+  const { isLoadingQuestions, questions } = useQuestions(currentQuestionIndex);
   const numCorrectAnswers = questions.reduce((numCorrect, question, index) => {
     if (answers[index] === question.correct_answer) {
       return numCorrect + 1;
@@ -33,12 +19,6 @@ function App() {
 
     return numCorrect;
   }, 0);
-
-  React.useEffect(() => {
-    if (currentQuestionIndex + 1 === questions.length) {
-      void fetchNextPage();
-    }
-  }, [currentQuestionIndex, fetchNextPage, questions.length]);
 
   return (
     <Container
@@ -54,7 +34,7 @@ function App() {
           alignItems: "center",
         }}
       >
-        {isLoading ? (
+        {isLoadingQuestions ? (
           <Skeleton />
         ) : (
           <Question
