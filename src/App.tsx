@@ -1,16 +1,13 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Container, Fab } from "@mui/material";
-import { Close } from "@mui/icons-material";
+import { Container } from "@mui/material";
 
 import { fetchQuestions } from "./utils";
 
 import { AnsweredQuestions } from "./components/AnsweredQuestions";
 import { AnsweredQuestionsDialog } from "./components/AnsweredQuestionsDialog";
 import { Question } from "./components/Question";
-import { RatioHeader } from "./components/RatioHeader";
 import { Skeleton } from "./components/Skeleton";
-import { StatusBar } from "./components/StatusBar";
 
 function App() {
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
@@ -24,7 +21,6 @@ function App() {
   });
   const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const [answers, setAnswers] = React.useState<Record<number, string>>({});
-  const [isListVisible, setIsListVisible] = React.useState(false);
   const questions =
     data?.pages.reduce(
       (allQuestions, page) => [...allQuestions, ...page],
@@ -37,12 +33,6 @@ function App() {
 
     return numCorrect;
   }, 0);
-  const header = (
-    <RatioHeader
-      numCorrectAnswers={numCorrectAnswers}
-      numTotalAnswers={Object.keys(answers).length}
-    />
-  );
 
   React.useEffect(() => {
     if (currentQuestionIndex + 1 === questions.length) {
@@ -89,23 +79,10 @@ function App() {
           />
         )}
       </Container>
-      <Fab
-        aria-label="show answered questions"
-        color="primary"
-        onClick={() => setIsListVisible(true)}
-        sx={{ position: "fixed", bottom: 0, right: 0, margin: "1rem" }}
-      >
-        {`${numCorrectAnswers} / ${Object.keys(answers).length}`}
-      </Fab>
       <AnsweredQuestionsDialog
-        isOpen={isListVisible}
-        handleClose={() => setIsListVisible(false)}
+        numCorrectAnswers={numCorrectAnswers}
+        numTotalAnswers={Object.keys(answers).length}
       >
-        <StatusBar
-          header={header}
-          icon={<Close />}
-          onIconClick={() => setIsListVisible(false)}
-        />
         <AnsweredQuestions answers={answers} questions={questions} />
       </AnsweredQuestionsDialog>
     </Container>
