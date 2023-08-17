@@ -19,6 +19,18 @@ function App() {
 
     return numCorrect;
   }, 0);
+  const onQuestionAnswered = (selectedAnswer: string) => {
+    if (!answers[currentQuestionIndex]) {
+      setAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [currentQuestionIndex]: selectedAnswer,
+      }));
+      setTimeout(
+        () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
+        1000
+      );
+    }
+  };
 
   return (
     <Container
@@ -43,18 +55,7 @@ function App() {
               questions[currentQuestionIndex]?.incorrect_answers ?? []
             }
             label={questions[currentQuestionIndex]?.question}
-            onAnswer={(selectedAnswer: string) => {
-              if (!answers[currentQuestionIndex]) {
-                setAnswers((prevAnswers) => ({
-                  ...prevAnswers,
-                  [currentQuestionIndex]: selectedAnswer,
-                }));
-                setTimeout(
-                  () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
-                  1000
-                );
-              }
-            }}
+            onAnswer={onQuestionAnswered}
             selectedAnswer={answers[currentQuestionIndex]}
           />
         )}
