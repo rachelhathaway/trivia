@@ -29,10 +29,10 @@ export const Question = ({
         />
       </Box>
       <Box style={{ rowGap: 10, display: "flex", flexDirection: "column" }}>
-        {options.map((option, index) => (
+        {options.map((option) => (
           <Button
             color={isSelectedAnswer(option) ? selectedColor : undefined}
-            key={index}
+            key={option}
             onClick={() => onAnswer(option)}
             variant={isSelectedAnswer(option) ? "contained" : "outlined"}
           >
