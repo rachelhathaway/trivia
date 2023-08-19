@@ -20,16 +20,14 @@ function App() {
     return numCorrect;
   }, 0);
   const onQuestionAnswered = (selectedAnswer: string) => {
-    if (!answers[currentQuestionIndex]) {
-      setAnswers((prevAnswers) => ({
-        ...prevAnswers,
-        [currentQuestionIndex]: selectedAnswer,
-      }));
-      setTimeout(
-        () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
-        1000
-      );
-    }
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [currentQuestionIndex]: selectedAnswer,
+    }));
+    setTimeout(
+      () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
+      1000
+    );
 
     if (questions.length - (currentQuestionIndex + 1) === 1) {
       void fetchNextQuestions();
