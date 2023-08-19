@@ -11,7 +11,7 @@ import { Skeleton } from "./components/Skeleton";
 function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const [answers, setAnswers] = React.useState<Record<number, string>>({});
-  const { isLoadingQuestions, questions } = useQuestions(currentQuestionIndex);
+  const { fetchNextQuestions, isLoadingQuestions, questions } = useQuestions();
   const numCorrectAnswers = questions.reduce((numCorrect, question, index) => {
     if (answers[index] === question.correct_answer) {
       return numCorrect + 1;
@@ -29,6 +29,10 @@ function App() {
         () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
         1000
       );
+    }
+
+    if (questions.length - (currentQuestionIndex + 1) === 1) {
+      void fetchNextQuestions();
     }
   };
 

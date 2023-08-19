@@ -1,10 +1,8 @@
-import React from "react";
-
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { fetchQuestions } from "./utils";
 
-export const useQuestions = (currentQuestionIndex: number) => {
+export const useQuestions = () => {
   const {
     data,
     fetchNextPage: fetchNextQuestions,
@@ -12,7 +10,7 @@ export const useQuestions = (currentQuestionIndex: number) => {
   } = useInfiniteQuery({
     queryKey: ["questions"],
     queryFn: ({ pageParam }) => {
-      const numQuestions = pageParam ? 5 : 1;
+      const numQuestions = pageParam ? 5 : 2;
 
       return fetchQuestions(numQuestions);
     },
@@ -25,13 +23,8 @@ export const useQuestions = (currentQuestionIndex: number) => {
       []
     ) ?? [];
 
-  React.useEffect(() => {
-    if (currentQuestionIndex + 1 === questions.length) {
-      void fetchNextQuestions();
-    }
-  }, [currentQuestionIndex, fetchNextQuestions, questions.length]);
-
   return {
+    fetchNextQuestions,
     isLoadingQuestions,
     questions,
   };
