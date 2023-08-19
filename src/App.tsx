@@ -26,7 +26,7 @@ function App() {
     }));
     setTimeout(
       () => setCurrentQuestionIndex((prevIndex) => prevIndex + 1),
-      1000
+      750
     );
 
     if (questions.length - (currentQuestionIndex + 1) === 1) {
