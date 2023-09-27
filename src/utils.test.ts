@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import { fetchQuestions } from "./utils";
 
 const firstTwoQuestions = [
