@@ -6,7 +6,7 @@ type JsonResponse = {
 };
 
 export const fetchQuestions = async (
-  numQuestions = 10
+  numQuestions: 2 | 5
 ): Promise<Question[]> => {
   const response = await fetch(
     `https://opentdb.com/api.php?amount=${numQuestions}`
