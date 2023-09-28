@@ -92,10 +92,6 @@ const results = [
 ];
 
 export const handlers = [
-  rest.get("https://opentdb.com/api.php", (_req, res, ctx) => {
-    return res.once(ctx.status(500, "something went wrong"));
-  }),
-
   rest.get("https://opentdb.com/api.php", (req, res, ctx) => {
     const amount = req.url.searchParams.get("amount");
 

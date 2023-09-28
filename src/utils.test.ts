@@ -1,3 +1,6 @@
+import { rest } from "msw";
+
+import { server } from "./mocks/server";
 import { fetchQuestions } from "./utils";
 
 const firstTwoQuestions = [
@@ -23,6 +26,14 @@ const firstTwoQuestions = [
 
 describe("fetchQuestions", () => {
   describe("error", () => {
+    beforeAll(() => {
+      server.use(
+        rest.get("https://opentdb.com/api.php", (_req, res, ctx) => {
+          return res.once(ctx.status(500, "something went wrong"));
+        })
+      );
+    });
+
     it("should return the error text", async () => {
       await expect(() => fetchQuestions(2)).rejects.toThrowError(
         "something went wrong"
