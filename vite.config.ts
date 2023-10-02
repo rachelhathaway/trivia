@@ -12,7 +12,7 @@ export default defineConfig({
       provider: "v8",
       include: ["src/**/*"],
       exclude: ["**/*.d.ts", "src/mocks", "src/types.ts"],
-      reporter: ["html"],
+      reporter: ["text", "html"],
       all: true,
     },
   },
