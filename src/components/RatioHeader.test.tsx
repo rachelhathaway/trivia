@@ -2,6 +2,14 @@ import { render, screen } from "@testing-library/react";
 import { RatioHeader } from "./RatioHeader";
 
 describe("RatioHeader", () => {
+  it("should render an empty string with zero answered questions", () => {
+    const { container } = render(
+      <RatioHeader numCorrectAnswers={0} numTotalAnswers={0} />
+    );
+
+    expect(container).toHaveTextContent("");
+  });
+
   it("should render the singular text with one answered question", () => {
     render(<RatioHeader numCorrectAnswers={1} numTotalAnswers={1} />);
 
